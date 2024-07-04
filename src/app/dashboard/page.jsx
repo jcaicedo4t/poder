@@ -20,7 +20,7 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold text-center mb-8">
           {" "}
           <div class="text-center sm:text-left mb-14">
-            <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+            <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl text-left">
               Bienvenido  {" "}{session.user.name}! 👋
             </h1>
           </div>
