@@ -119,7 +119,7 @@ export default function Header() {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
+              <div className="grid py-6">
                 <Link href="/">
                   <span className="text-base font-semibold leading-7 text-gray-900">
                     Inicio
