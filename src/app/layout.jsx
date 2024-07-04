@@ -16,6 +16,9 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
           <Providers>
         <Header />
+        <div className="items-center">
+          
+        </div>
         <div className="flex items-center justify-center p-12 sm:p-24">
 
           {children}
