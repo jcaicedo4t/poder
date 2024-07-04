@@ -20,10 +20,10 @@ export default function Home() {
           priority
         />
         <h1 className="text-4xl font-bold mb-4">
-          Bienvenido a su agenda de Hábitos
+          Bienvenido a su agenda
         </h1>
         <p className="text-xl mb-8">
-          Realice un seguimiento de sus hábitos y mejore su productividad.
+        Gestione sus hábitos y tareas de manera eficiente para maximizar su productividad.
         </p>
         <Link href={status === "authenticated" ? "/calendar" : "/login"}>
           <button className="shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-black text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 cursor-pointer">
