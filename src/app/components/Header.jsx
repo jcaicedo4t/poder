@@ -3,21 +3,26 @@ import { useState } from "react";
 import Link from "next/link";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const navigation = [
-  { name: "Inicio", href: "/" },
-  { name: "Calendario", href: "/calendar" },
-  { name: "Habitos", href: "/habits" },
-  { name: "Tareas", href: "/task" },
-];
+import { useSession, signOut } from "next-auth/react";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+
+  const authenticatedNavigation = [
+    { name: "Calendario", href: "/calendar" },
+    { name: "Habitos", href: "/habits" },
+    { name: "Tareas", href: "/task" },
+  ];
 
   return (
-    <header className="bg-white" style={{
-      'height' : '100px'
-    }}>
+    <header
+      className="bg-white"
+      style={{
+        height: "100px",
+      }}
+    >
       <nav
         className="flex items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -26,11 +31,7 @@ export default function Header() {
           <Link href="/">
             <span className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+              <img className="h-10 w-auto" src="/images/logo.png" alt="" />
             </span>
           </Link>
         </div>
@@ -45,21 +46,49 @@ export default function Header() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
+          <Link  href={status === "authenticated" ? "/dashboard" : "/"}>
+            <span className="text-sm font-semibold leading-6 text-gray-900">
+              Inicio
+            </span>
+          </Link>
+          {status === "authenticated" && authenticatedNavigation.map((item) => (
             <Link key={item.name} href={item.href}>
               <span className="text-sm font-semibold leading-6 text-gray-900">
-                {item.name}{" "}
+                {item.name}
               </span>
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/login">
-            <span className="text-sm font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </span>
-          </Link>
-        </div>
+        {status === "authenticated" ? (
+          <>
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center">
+              <img
+                src={session.user.image}
+                alt="Foto de perfil"
+                className="h-8 w-8 rounded-full"
+              />
+              <span className="ml-2 text-sm font-semibold leading-6 text-gray-900">
+                {session.user.name}
+              </span>
+              <button
+                className="ml-3 flex items-center"
+                onClick={async () => {
+                  await signOut({ callbackUrl: "/" });
+                }}
+              >
+                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-1" />
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <Link href="/login">
+              <span className="text-sm font-semibold leading-6 text-gray-900">
+                Log in <span aria-hidden="true">&rarr;</span>
+              </span>
+            </Link>
+          </div>
+        )}
       </nav>
       <Dialog
         className="lg:hidden"
@@ -74,7 +103,7 @@ export default function Header() {
                 <span className="sr-only">Your Company</span>
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="/images/logo.png"
                   alt=""
                 />
               </span>
@@ -91,19 +120,36 @@ export default function Header() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                {navigation.map((item) => (
+                <Link href="/">
+                  <span className="text-base font-semibold leading-7 text-gray-900">
+                    Inicio
+                  </span>
+                </Link>
+                {status === "authenticated" && authenticatedNavigation.map((item) => (
                   <Link key={item.name} href={item.href}>
-                    <div>{item.name}</div>
+                    <span className="text-base font-semibold leading-7 text-gray-900">
+                      {item.name}
+                    </span>
                   </Link>
                 ))}
               </div>
-
               <div className="py-6">
-                <Link href="/login">
-                  <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Log in
-                  </span>
-                </Link>
+                {status === "authenticated" ? (
+                  <button
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    onClick={async () => {
+                      await signOut({ callbackUrl: "/" });
+                    }}
+                  >
+                    Sign out
+                  </button>
+                ) : (
+                  <Link href="/login">
+                    <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      Log in
+                    </span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
