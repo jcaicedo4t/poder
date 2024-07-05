@@ -1,9 +1,9 @@
 const people = [
     {
-      name: 'Whitney Francis',
-      role: 'Copywriter',
+      name: 'José Caicedo',
+      role: 'Front-end Developer',
       imageUrl:
-        'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
       xUrl: '#',
       linkedinUrl: '#',
     },
