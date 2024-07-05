@@ -28,7 +28,7 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="/">
+          <Link href={status === "authenticated" ? "/dashboard" : "/"}>
             <span className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img className="h-10 w-auto" src="/images/logo.png" alt="" />
