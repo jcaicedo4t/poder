@@ -4,6 +4,9 @@ import Image from "next/image";
 
 import Link from "next/link";
 import Contend from "./habits/components/Contend";
+import Pricing from "./components/Pricing";
+import Testimonial from "./components/Testimonials"
+import Teams from "./components/Teams"
 import { useSession } from "next-auth/react";
 export default function Home() {
   const { data: session, status } = useSession();
@@ -31,7 +34,9 @@ export default function Home() {
           </button>
         </Link>
       </section>
-
+     <Pricing/>
+     <Testimonial/>
+     <Teams/>
       {/* <Contend/> */}
 
       {/* Features Section */}
