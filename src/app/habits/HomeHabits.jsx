@@ -6,7 +6,7 @@ export default async function HomeHabits() {
   
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Hábitos</h2>
+      <h2 className="text-xl font-bold mb-4">Hábitos 🏆</h2>
       <div className="divide-y divide-gray-200">
         {rows.map((habit) => (
           <div key={habit.id} className="py-4">

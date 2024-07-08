@@ -13,7 +13,7 @@ export default async function Calendar() {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Calendario de Eventos</h2>
+      <h2 className="text-xl font-bold mb-4">Calendario 📅</h2>
       <div className="divide-y divide-gray-200">
       {events.map((event) => (
           <div key={event.id} className="py-4">
