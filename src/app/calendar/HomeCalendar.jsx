@@ -6,7 +6,7 @@ export default async function Calendar() {
   try {
     const eventsr = await sql`SELECT * FROM calendarevents`; 
     events = eventsr.rows; 
-    console.log(events); 
+    // console.log(events); 
   } catch (error) {
     console.error("Error fetching calendar events:", error);
   }
