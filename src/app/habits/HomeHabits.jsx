@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function HomeHabits() {
+  noStore();
   let eventse = [];
   eventse = [];
   try {
@@ -22,7 +24,7 @@ export default async function HomeHabits() {
           <div key={habit.id} className="py-4">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-lg font-bold">{habit.name}s</h3>
+                <h3 className="text-lg font-bold">{habit.name}</h3>
                 <p className="text-gray-500">{habit.description}</p>
 
               </div>
