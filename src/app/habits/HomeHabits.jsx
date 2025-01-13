@@ -19,7 +19,7 @@ export default async function HomeHabits() {
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">Hábitos 🏆</h2>
 
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200 scroll_container">
         {eventse.map((habit) => (
           <div key={habit.id} className="py-4">
             <div className="flex justify-between items-center">

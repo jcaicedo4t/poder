@@ -13,7 +13,7 @@ export default async function Task() {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">Tareas 📕</h2>
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200 scroll_container">
         {rows.map((task) => (
           <div key={task.id} className="py-4">
             <h3 className="text-lg font-bold">{task.title}</h3>

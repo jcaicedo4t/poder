@@ -32,3 +32,23 @@ body {
 .padding_input{
   padding: 5px !important;
 }
+
+.scroll_container{
+  overflow-y: auto; 
+  height: 500px; 
+  padding: 1rem; 
+  box-sizing: border-box; 
+  scroll-behavior: smooth; 
+}
+
+.page-transition {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page-transition.fade-in {
+  opacity: 1;
+}
+
+.page-transition.fade-out {
+  opacity: 0;
+}
