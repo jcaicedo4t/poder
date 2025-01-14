@@ -27,7 +27,7 @@ export default function Example() {
       <div className="lg:grid ">
         <CalendarEvents onCreateEvent={onCreateEvent} />
         <div className="mr-24 w-[40rem]">
-          <Calendar reload={reloadCalendar} onReloaded={onCalendarReloaded} />
+          <Calendar />
         </div>
       </div>
     </div>
