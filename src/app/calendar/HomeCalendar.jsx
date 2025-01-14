@@ -34,6 +34,7 @@ export default function Calendar({ reload, onReloaded }) {
     if (reload) {
       fetchEvents();
     }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]); // Vuelve a hacer el fetch cuando `reload` cambia a true
 
   return (
