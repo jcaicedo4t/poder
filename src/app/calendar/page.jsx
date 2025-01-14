@@ -26,12 +26,7 @@ export default function Example() {
       </h2>
       <div className="lg:grid ">
         <CalendarEvents onCreateEvent={onCreateEvent} />
-        <div
-          className="mr-24"
-          style={{
-            width: "40rem",
-          }}
-        >
+        <div className="mr-24 w-[40rem]">
           <Calendar reload={reloadCalendar} onReloaded={onCalendarReloaded} />
         </div>
       </div>
