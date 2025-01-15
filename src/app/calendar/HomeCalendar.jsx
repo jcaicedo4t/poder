@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Calendar({ reload, onReloaded }) {
+export default function Calendar() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reloadCalendar, setReloadCalendar] = useState(false);
   const pathname = usePathname();
 
+  // Función para cargar los eventos
   const fetchEvents = async () => {
     try {
       setLoading(true);
@@ -20,24 +22,59 @@ export default function Calendar({ reload, onReloaded }) {
       console.error("Error fetching calendar events:", error);
     } finally {
       setLoading(false);
-      if (onReloaded) onReloaded(); // Notifica al padre que el calendario se ha recargado
     }
   };
-  // Un solo useEffect para manejar tanto la carga inicial como la recarga
+
+  // UseEffect para cargar eventos al cargar el componente o cuando reloadCalendar cambie
   useEffect(() => {
     fetchEvents();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]); // El fetch se realiza cuando el componente se monta o cuando `reload` cambia
+  }, [reloadCalendar]); // Se vuelve a llamar cuando reloadCalendar cambia
+
+  // Función para recargar el calendario
+  const reloadCalendarHandler = () => {
+    // Si ya está cargando, no permitir un segundo clic
+    if (loading) return; // No permite hacer clic si ya está cargando
+
+    setReloadCalendar(true); 
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setReloadCalendar(false); // Resetear el estado después de la recarga
+    }
+  }, [loading]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2
         className="text-xl font-bold mb-4 ml-4"
-        style={{
-          marginRight: "-9px",
-        }}
+        style={{ marginRight: "-9px" }}
       >
         Calendario 📅
+        {pathname === "/calendar" && (
+          <button
+            onClick={reloadCalendarHandler}
+            disabled={loading} // Deshabilitar el botón cuando está cargando
+            style={{
+              float: "right",
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+              />
+            </svg>
+          </button>
+        )}
         {pathname === "/dashboard" && (
           <Link
             href="/calendar"
