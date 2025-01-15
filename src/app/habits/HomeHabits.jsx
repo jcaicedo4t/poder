@@ -16,7 +16,7 @@ export default async function HomeHabits() {
   // console.log(rows);
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="bg-white shadow-md rounded-lg p-6 h-[500px]">
       <h2 className="text-xl font-bold mb-4">Hábitos 🏆</h2>
 
       <div className="divide-y divide-gray-200 scroll_container">

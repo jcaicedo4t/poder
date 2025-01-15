@@ -33,12 +33,12 @@ body {
   padding: 5px !important;
 }
 
-.scroll_container{
-  overflow-y: auto; 
-  height: 500px; 
-  padding: 1rem; 
-  box-sizing: border-box; 
-  scroll-behavior: smooth; 
+.scroll_container {
+  overflow-y: auto;
+  max-height: calc(100% - 2rem); /* Ajusta el alto disponible para contenido */
+  padding-right: 0.5rem; /* Agrega espacio para el scroll */
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 .page-transition {
