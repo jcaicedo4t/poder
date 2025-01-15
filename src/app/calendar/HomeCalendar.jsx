@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,17 +23,11 @@ export default function Calendar({ reload, onReloaded }) {
       if (onReloaded) onReloaded(); // Notifica al padre que el calendario se ha recargado
     }
   };
-
+  // Un solo useEffect para manejar tanto la carga inicial como la recarga
   useEffect(() => {
     fetchEvents();
-  }, []);
-
-  useEffect(() => {
-    if (reload) {
-      fetchEvents();
-    }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]); // Vuelve a hacer el fetch cuando `reload` cambia a true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reload]); // El fetch se realiza cuando el componente se monta o cuando `reload` cambia
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
