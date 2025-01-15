@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Calendar from "../calendar/HomeCalendar";
+// import Calendar from "../calendar/HomeCalendar";
 import CalendarEvents from "../calendar/CalendarEvent";
 
 export default function Example() {
@@ -27,7 +27,7 @@ export default function Example() {
       <div className="lg:grid ">
         <CalendarEvents onCreateEvent={onCreateEvent} />
         <div className="mr-24 w-[40rem]">
-          <Calendar reload={reloadCalendar} onReloaded={onCalendarReloaded} />
+          {/* <Calendar reload={reloadCalendar} onReloaded={onCalendarReloaded} /> */}
         </div>
       </div>
     </div>
