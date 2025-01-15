@@ -31,7 +31,7 @@ export default function CalendarEvents({onCreateEvent}) {
   
 
   return (
-    <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9 ml-3 w-80">
+    <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9 ml-3 w-100 md:w-80">
       {/* Header del calendario */}
       <div className="flex items-center justify-between text-gray-900">
         <button

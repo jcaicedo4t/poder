@@ -8,9 +8,9 @@ export default function Example() {
       <h2 className="text-base font-semibold text-gray-900 mb-5">
         Próximos eventos
       </h2>
-      <div className="lg:grid">
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
         <CalendarEvents />
-        <div className="mr-24 w-[40rem]">
+        <div className="grid grid-cols-1 ">
           <Calendar />
         </div>
       </div>

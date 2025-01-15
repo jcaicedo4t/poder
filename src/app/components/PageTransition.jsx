@@ -14,7 +14,7 @@ export default function PageTransition({ children }) {
     const timeout = setTimeout(() => {
       // Finaliza la animación de salida después de 300ms
       setIsTransitioning(false);
-    }, 400); // Duración de la transición
+    }, 0); // Duración de la transición
 
     return () => clearTimeout(timeout); // Limpia el temporizador
   }, [pathname]);
