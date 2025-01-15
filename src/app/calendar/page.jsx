@@ -1,6 +1,4 @@
-"use client";
 
-import React from "react";
 import Calendar from "../calendar/HomeCalendar";
 import CalendarEvents from "../calendar/CalendarEvent";
 
