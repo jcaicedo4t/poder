@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import axios from "axios";
-import Calendar from "./HomeCalendar";
-import eventEmitter from "../../../pages/api/eventEmitter";
+// import Calendar from "./HomeCalendar";
+// import eventEmitter from "../../../pages/api/eventEmitter";
 
 export default function AddEventCalendar({ showModal, setShowModal , onCreateEvent }) {
   const [habit, setHabit] = useState({ name: "", description: "" });
