@@ -17,7 +17,11 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+/* Asegúrate de que html y body tengan una altura completa */
+html, body {
+  height: 100%; /* Agregado */
+  margin: 0;    /* Elimina márgenes por defecto */
+}
 
 body {
   color: black !important;  background: rgb(255, 255, 255) !important;
