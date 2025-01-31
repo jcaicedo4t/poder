@@ -5,6 +5,7 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -76,7 +77,13 @@ export default function Header() {
                   await signOut({ callbackUrl: "/" });
                 }}
               >
-                <ArrowRightOnRectangleIcon className="h-6 w-6 mr-1" />
+         <Image
+                     src="/images/logout.png"
+                     width={25}
+                     className="float-right"
+                     height={25}
+                     alt="Agregar hábito"
+                   />
               </button>
             </div>
           </>
