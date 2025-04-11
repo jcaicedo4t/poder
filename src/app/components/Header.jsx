@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Logo from "./Logo"; // Asegúrate de importar tu componentes de log
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function Header() {
           <Link href={status === "authenticated" ? "/dashboard" : "/"}>
             <span className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-10 w-auto" src="/images/logo.png" alt="" />
+              <Logo size="small" />
             </span>
           </Link>
         </div>
