@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
+import ContactForm from "./ContactForm"
 
 const people = [
   {
@@ -27,8 +28,8 @@ const people = [
     skills: ["Figma", "Adobe XD", "Diseño de Interfaces", "Investigación de Usuarios", "Prototipado"],
   },
   {
-    name: "Andres Gil",
-    role: "QA & Testing",
+    name: "Carlos Rodríguez",
+    role: "Desarrollador Backend",
     bio: "Experto en arquitectura de sistemas y bases de datos, con enfoque en la creación de APIs eficientes y seguras.",
     imageUrl:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
@@ -41,6 +42,7 @@ const people = [
 
 export default function Teams() {
   const [activeIndex, setActiveIndex] = useState(null)
+  const [showContactForm, setShowContactForm] = useState(false)
 
   return (
     <section className="relative bg-white py-24 sm:py-32" id="team">
@@ -269,11 +271,11 @@ export default function Teams() {
             Estamos buscando personas talentosas y apasionadas para ayudarnos a construir el futuro de la productividad
             personal.
           </p>
-          <a
-            href="#careers"
+          <button
+            onClick={() => setShowContactForm(true)}
             className="mt-8 inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Ver posiciones abiertas
+            Postularme ahora
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="ml-2 h-5 w-5"
@@ -287,9 +289,12 @@ export default function Teams() {
                 clipRule="evenodd"
               />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
+
+      {/* Formulario de contacto modal */}
+      {showContactForm && <ContactForm onClose={() => setShowContactForm(false)} />}
     </section>
   )
 }
