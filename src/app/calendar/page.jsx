@@ -79,30 +79,7 @@ export default function CalendarPage() {
         </div>
 
         {/* Lista de próximos eventos */}
-        <div className="lg:col-span-12">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Próximos eventos</h2>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => document.getElementById("add-event-button").click()}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <PlusIcon className="h-5 w-5 mr-2" />
-                  Nuevo Evento
-                </motion.button>
-              </div>
-              <Calendar
-                reload={reload}
-                onReloaded={handleReloaded}
-                onSelectEvent={setSelectedEvent}
-                isLoading={isLoading}
-              />
-            </div>
-          </div>
-        </div>
+     
       </div>
 
       {/* Panel de detalles del evento como overlay */}
