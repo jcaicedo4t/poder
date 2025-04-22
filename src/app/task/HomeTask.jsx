@@ -1,39 +1,34 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { CheckCircleIcon, ClockIcon, CalendarIcon } from "@heroicons/react/24/outline"
-import Loader from "../components/Loader"
+import { CheckCircleIcon, ClockIcon, CalendarIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
 
 export default function HomeTask() {
-  const { data: session, status } = useSession()
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      if (status === "authenticated") {
-        try {
-          setLoading(true)
-          const response = await fetch("/api/tasks")
-          if (response.ok) {
-            const data = await response.json()
-            setTasks(data)
-          } else {
-            console.error("Error fetching tasks:", response.statusText)
-          }
-        } catch (error) {
-          console.error("Error fetching tasks:", error)
-        } finally {
-          setLoading(false)
-        }
+  const fetchTasks = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch("/api/tasks")
+      if (response.ok) {
+        const data = await response.json()
+        setTasks(data)
+      } else {
+        console.error("Error fetching tasks")
       }
+    } catch (error) {
+      console.error("Error fetching tasks:", error)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchTasks()
-  }, [status])
+  }, [])
 
   // Función para formatear la fecha
   const formatDate = (dateString) => {
@@ -62,39 +57,30 @@ export default function HomeTask() {
     }
   }
 
-  if (status === "loading" || loading) {
-    return (
-      <div className="bg-white shadow-md rounded-lg p-6 h-[500px] flex items-center justify-center">
-        <Loader />
-      </div>
-    )
-  }
-
-  if (status === "unauthenticated") {
-    return (
-      <div className="bg-white shadow-md rounded-lg p-6 h-[500px] flex flex-col items-center justify-center">
-        <p className="text-gray-500 mb-4">Inicia sesión para ver tus tareas</p>
-        <Link
-          href="/login"
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
-        >
-          Iniciar sesión
-        </Link>
-      </div>
-    )
-  }
-
   return (
     <div className="bg-white shadow-md rounded-lg p-6 h-[500px]">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900">Tareas 📕</h2>
-        <Link href="/task" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-          <span>Ver todas</span>
-        </Link>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={fetchTasks}
+            className="p-2 text-gray-500 hover:text-indigo-600 rounded-full hover:bg-gray-100 transition-colors"
+            title="Actualizar tareas"
+          >
+            <ArrowPathIcon className={`h-5 w-5 ${loading ? "animate-spin" : ""}`} />
+          </button>
+          <Link href="/task" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
+            <span>Ver todas</span>
+          </Link>
+        </div>
       </div>
 
       <div className="divide-y divide-gray-100 scroll_container">
-        {tasks.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+          </div>
+        ) : tasks.length > 0 ? (
           tasks.map((task) => {
             const priorityInfo = getPriorityInfo(task.priority || "media")
 
