@@ -89,7 +89,6 @@ export default function HomeTask() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900">Tareas 📕</h2>
         <Link href="/task" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-          <Image src="/images/addtask.png" width={35} height={35} alt="Gestionar tareas" className="mr-2" />
           <span>Ver todas</span>
         </Link>
       </div>

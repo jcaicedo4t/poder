@@ -1,44 +1,55 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { CalendarIcon, ClockIcon, CheckCircleIcon, ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  CalendarIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ArrowPathIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 
-export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading }) {
-  const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(true)
-  const pathname = usePathname()
+export default function Calendar({
+  reload,
+  onReloaded,
+  onSelectEvent,
+  isLoading,
+}) {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   const fetchEvents = async () => {
     try {
-      setLoading(true)
-      const response = await fetch("/api/calendar")
-      const data = await response.json()
-      setEvents(data)
+      setLoading(true);
+      const response = await fetch("/api/calendar");
+      const data = await response.json();
+      setEvents(data);
     } catch (error) {
-      console.error("Error fetching calendar events:", error)
+      console.error("Error fetching calendar events:", error);
     } finally {
-      setLoading(false)
-      if (onReloaded) onReloaded() // Notifica al padre que el calendario se ha recargado
+      setLoading(false);
+      if (onReloaded) onReloaded(); // Notifica al padre que el calendario se ha recargado
     }
-  }
+  };
 
   useEffect(() => {
-    fetchEvents()
-  }, [])
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     if (reload) {
-      fetchEvents()
+      fetchEvents();
     }
-  }, [reload])
+  }, [reload]);
 
   // Formatear fecha y hora
   const formatDateTime = (dateTimeString) => {
-    const date = new Date(dateTimeString)
+    const date = new Date(dateTimeString);
     return {
       date: date.toLocaleDateString("es-CO", {
         day: "numeric",
@@ -52,38 +63,40 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
       }),
       isPast: date < new Date(),
       isToday: new Date().toDateString() === date.toDateString(),
-    }
-  }
+    };
+  };
 
   // Calcular duración del evento
   const calculateDuration = (startTime, endTime) => {
-    const start = new Date(startTime)
-    const end = new Date(endTime)
-    const diffMs = end - start
-    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60))
-    const diffMins = Math.round((diffMs % (1000 * 60 * 60)) / (1000 * 60))
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const diffMs = end - start;
+    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMins = Math.round((diffMs % (1000 * 60 * 60)) / (1000 * 60));
 
     if (diffHrs === 0) {
-      return `${diffMins} min`
+      return `${diffMins} min`;
     } else if (diffMins === 0) {
-      return `${diffHrs} h`
+      return `${diffHrs} h`;
     } else {
-      return `${diffHrs} h ${diffMins} min`
+      return `${diffHrs} h ${diffMins} min`;
     }
-  }
+  };
 
   const handleSelectEvent = (event) => {
     if (onSelectEvent) {
-      onSelectEvent(event)
+      onSelectEvent(event);
     }
-  }
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 h-[500px]">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900 flex items-center">
-          <CalendarIcon className="h-6 w-6 text-indigo-600 mr-2" />
-          {pathname === "/calendar" ? "Eventos del calendario" : "Próximos eventos"}
+
+          {pathname === "/calendar"
+            ? "Eventos del calendario"
+            : "Próximos eventos"} 📅
         </h2>
         <div className="flex items-center space-x-2">
           <button
@@ -91,15 +104,18 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
             className="p-2 text-gray-500 hover:text-indigo-600 rounded-full hover:bg-gray-100 transition-colors"
             title="Actualizar eventos"
           >
-            <ArrowPathIcon className={`h-5 w-5 ${loading || isLoading ? "animate-spin" : ""}`} />
+            <ArrowPathIcon
+              className={`h-5 w-5 ${
+                loading || isLoading ? "animate-spin" : ""
+              }`}
+            />
           </button>
           {pathname === "/dashboard" && (
             <Link
               href="/calendar"
-              className="p-2 text-gray-500 hover:text-indigo-600 rounded-full hover:bg-gray-100 transition-colors"
-              title="Ver calendario completo"
+              className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center"
             >
-              <Image src="/images/addcalendar.png" width={24} height={24} alt="Ver calendario" />
+              <span>Ver todos</span>
             </Link>
           )}
         </div>
@@ -110,13 +126,19 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       ) : events.length > 0 ? (
-        <div className="max-h-[400px] overflow-y-auto pr-2" style={{ scrollbarWidth: "thin" }}>
+        <div
+          className="max-h-[400px] overflow-y-auto pr-2"
+          style={{ scrollbarWidth: "thin" }}
+        >
           <AnimatePresence>
             <div className="space-y-4 w-full">
               {events.map((event) => {
-                const startDateTime = formatDateTime(event.start_time)
-                const endDateTime = formatDateTime(event.end_time)
-                const duration = calculateDuration(event.start_time, event.end_time)
+                const startDateTime = formatDateTime(event.start_time);
+                const endDateTime = formatDateTime(event.end_time);
+                const duration = calculateDuration(
+                  event.start_time,
+                  event.end_time
+                );
 
                 return (
                   <motion.div
@@ -129,17 +151,21 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
                       event.is_completed
                         ? "bg-green-50 border-green-100"
                         : startDateTime.isPast
-                          ? "bg-red-50 border-red-100"
-                          : startDateTime.isToday
-                            ? "bg-amber-50 border-amber-100"
-                            : "bg-white border-gray-200"
+                        ? "bg-red-50 border-red-100"
+                        : startDateTime.isToday
+                        ? "bg-amber-50 border-amber-100"
+                        : "bg-white border-gray-200"
                     } hover:shadow-md transition-shadow cursor-pointer w-full`}
                     onClick={() => handleSelectEvent(event)}
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-1">{event.title}</h3>
-                        <p className="text-gray-600 text-sm mb-2">{event.description}</p>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">
+                          {event.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm mb-2">
+                          {event.description}
+                        </p>
                         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
                           <div className="flex items-center">
                             <CalendarIcon className="h-4 w-4 mr-1" />
@@ -151,7 +177,9 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
                               {startDateTime.time} - {endDateTime.time}
                             </span>
                           </div>
-                          <div className="text-gray-400 text-xs">({duration})</div>
+                          <div className="text-gray-400 text-xs">
+                            ({duration})
+                          </div>
                         </div>
                       </div>
                       <div>
@@ -176,7 +204,7 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
                       </div>
                     </div>
                   </motion.div>
-                )
+                );
               })}
             </div>
           </AnimatePresence>
@@ -184,21 +212,14 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
       ) : (
         <div className="text-center py-16 bg-gray-50 rounded-lg w-full">
           <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No hay eventos</h3>
-          <p className="mt-1 text-sm text-gray-500">Comienza creando un nuevo evento en tu calendario.</p>
-          <div className="mt-6">
-            <button
-              id="add-event-button"
-              type="button"
-              onClick={() => document.getElementById("calendar-add-event-button")?.click()}
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Nuevo Evento
-            </button>
-          </div>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">
+            No hay eventos
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Comienza creando un nuevo evento en tu calendario.
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }

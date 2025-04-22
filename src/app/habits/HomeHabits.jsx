@@ -91,7 +91,6 @@ export default function HomeHabits() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900">Hábitos 🏆</h2>
         <Link href="/habits" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-          <Image src="/images/addhabits.png" width={35} height={35} alt="Gestionar hábitos" className="mr-2" />
           <span>Ver todos</span>
         </Link>
       </div>
