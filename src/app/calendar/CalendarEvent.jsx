@@ -58,9 +58,10 @@ export default function CalendarEvents({ onCreateEvent, onSelectEvent }) {
     const dayEvents = getEventsForDay(day)
     if (dayEvents.length > 0 && onSelectEvent) {
       onSelectEvent(dayEvents[0])
+    } else {
+      // Si no hay eventos, abrir el modal para crear uno nuevo
+      setShowModal(true)
     }
-
-    setShowModal(true)
   }
 
   const handleCreateEvent = () => {
@@ -75,6 +76,12 @@ export default function CalendarEvents({ onCreateEvent, onSelectEvent }) {
       const eventStart = dayjs(event.start_time)
       return eventStart.format("YYYY-MM-DD") === day.format("YYYY-MM-DD")
     })
+  }
+
+  // Verificar si un día es pasado (anterior a hoy)
+  const isPastDay = (day) => {
+    const today = dayjs().startOf("day")
+    return day.isBefore(today, "day")
   }
 
   return (
@@ -118,20 +125,26 @@ export default function CalendarEvents({ onCreateEvent, onSelectEvent }) {
           const isCurrentMonth = day.isSame(currentDate, "month")
           const dayEvents = getEventsForDay(day)
           const hasEvents = dayEvents.length > 0
+          const isPast = isPastDay(day)
 
           return (
             <motion.button
               key={index}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: isPast ? 1 : 1.05 }}
+              whileTap={{ scale: isPast ? 1 : 0.95 }}
               type="button"
-              onClick={() => handleDayClick(day)}
+              onClick={() => !isPast && handleDayClick(day)}
+              disabled={isPast}
               className={`relative h-16 sm:h-24 p-1 rounded-lg flex flex-col items-center justify-start ${
                 isCurrentMonth
                   ? isToday
                     ? "bg-indigo-100 text-indigo-800 font-bold"
-                    : "bg-white hover:bg-gray-50"
-                  : "bg-gray-50 text-gray-400"
+                    : isPast
+                      ? "bg-gray-50 text-gray-400 cursor-not-allowed opacity-70"
+                      : "bg-white hover:bg-gray-50"
+                  : isPast
+                    ? "bg-gray-50 text-gray-300 cursor-not-allowed opacity-70"
+                    : "bg-gray-50 text-gray-400"
               } border ${isToday ? "border-indigo-300" : "border-gray-200"}`}
             >
               <span
@@ -181,7 +194,10 @@ export default function CalendarEvents({ onCreateEvent, onSelectEvent }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           type="button"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setSelectedDay(dayjs()) // Usar la fecha actual si no hay día seleccionado
+            setShowModal(true)
+          }}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           <PlusIcon className="h-5 w-5 mr-2" />
@@ -193,7 +209,7 @@ export default function CalendarEvents({ onCreateEvent, onSelectEvent }) {
         showModal={showModal}
         setShowModal={setShowModal}
         onCreateEvent={handleCreateEvent}
-        selectedDate={selectedDay ? selectedDay.format("YYYY-MM-DD") : null}
+        selectedDate={selectedDay ? selectedDay.toDate() : new Date()}
       />
     </div>
   )

@@ -1,22 +1,42 @@
-import { sql } from "@vercel/postgres"
-import { unstable_noStore as noStore } from "next/cache"
-import dynamic from "next/dynamic"
-import Image from "next/image"
+"use client"
+
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
+import Image from "next/image"
 import { CheckCircleIcon, ClockIcon, XCircleIcon } from "@heroicons/react/24/outline"
+import Loader from "../components/Loader"
+import dynamic from "next/dynamic"
 
 const ClientSelect = dynamic(() => import("./ClientSelect"), { ssr: false })
 
-export default async function HomeHabits() {
-  noStore()
+export default function HomeHabits() {
+  const { data: session, status } = useSession()
+  const [habits, setHabits] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  let habits = []
-  try {
-    const result = await sql`SELECT * FROM habits ORDER BY id DESC LIMIT 5`
-    habits = result.rows
-  } catch (error) {
-    console.error("Error fetching habits:", error)
-  }
+  useEffect(() => {
+    const fetchHabits = async () => {
+      if (status === "authenticated") {
+        try {
+          setLoading(true)
+          const response = await fetch("/api/habits")
+          if (response.ok) {
+            const data = await response.json()
+            setHabits(data)
+          } else {
+            console.error("Error fetching habits:", response.statusText)
+          }
+        } catch (error) {
+          console.error("Error fetching habits:", error)
+        } finally {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchHabits()
+  }, [status])
 
   const getStatusInfo = (status) => {
     switch (status) {
@@ -42,6 +62,28 @@ export default async function HomeHabits() {
           label: "Pendiente",
         }
     }
+  }
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="bg-white shadow-md rounded-lg p-6 h-[500px] flex items-center justify-center">
+        <Loader />
+      </div>
+    )
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="bg-white shadow-md rounded-lg p-6 h-[500px] flex flex-col items-center justify-center">
+        <p className="text-gray-500 mb-4">Inicia sesión para ver tus hábitos</p>
+        <Link
+          href="/login"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+        >
+          Iniciar sesión
+        </Link>
+      </div>
+    )
   }
 
   return (

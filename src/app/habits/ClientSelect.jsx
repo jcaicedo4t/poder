@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { CheckCircleIcon, ClockIcon, XCircleIcon } from "@heroicons/react/24/outline"
 
 export default function ClientSelect({ id, currentStatus }) {
   const [status, setStatus] = useState(currentStatus || "pendiente")
@@ -43,8 +44,7 @@ export default function ClientSelect({ id, currentStatus }) {
     }
   }, [updateTargetPosition])
 
-  const handleStatusChange = async (e) => {
-    const newStatus = e.target.value
+  const handleStatusChange = async (newStatus) => {
     setStatus(newStatus)
     updateTargetPosition()
 
@@ -81,6 +81,17 @@ export default function ClientSelect({ id, currentStatus }) {
     }
   }
 
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "finalizada":
+        return <CheckCircleIcon className="h-5 w-5 text-green-500" />
+      case "en curso":
+        return <ClockIcon className="h-5 w-5 text-amber-500" />
+      default:
+        return <XCircleIcon className="h-5 w-5 text-gray-400" />
+    }
+  }
+
   const getStatusEmoji = (status) => {
     switch (status) {
       case "pendiente":
@@ -95,17 +106,42 @@ export default function ClientSelect({ id, currentStatus }) {
   }
 
   return (
-    <div className="flex items-center gap-4 relative">
+    <div className="flex items-center gap-2 relative">
       <span ref={emojiRef} className="text-2xl">
         {getStatusEmoji(status)}
       </span>
 
-      <div className="inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 cursor-pointer">
-        <select value={status} onChange={handleStatusChange} className="p-2 border border-blue-300 rounded-md">
-          <option value="pendiente">Pendiente</option>
-          <option value="en curso">En curso</option>
-          <option value="finalizada">Finalizada</option>
-        </select>
+      <div className="inline-flex rounded-md shadow-sm">
+        <button
+          type="button"
+          onClick={() => handleStatusChange("pendiente")}
+          className={`relative inline-flex items-center px-3 py-2 text-sm font-medium rounded-l-md ${
+            status === "pendiente" ? "bg-gray-100 text-gray-700" : "bg-white text-gray-500 hover:bg-gray-50"
+          } border border-gray-200`}
+        >
+          <XCircleIcon className="h-4 w-4 mr-1" />
+          <span className="sr-only sm:not-sr-only sm:ml-1">Pendiente</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleStatusChange("en curso")}
+          className={`relative inline-flex items-center px-3 py-2 text-sm font-medium ${
+            status === "en curso" ? "bg-amber-100 text-amber-700" : "bg-white text-gray-500 hover:bg-gray-50"
+          } border-t border-b border-gray-200`}
+        >
+          <ClockIcon className="h-4 w-4 mr-1" />
+          <span className="sr-only sm:not-sr-only sm:ml-1">En curso</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => handleStatusChange("finalizada")}
+          className={`relative inline-flex items-center px-3 py-2 text-sm font-medium rounded-r-md ${
+            status === "finalizada" ? "bg-green-100 text-green-700" : "bg-white text-gray-500 hover:bg-gray-50"
+          } border border-gray-200`}
+        >
+          <CheckCircleIcon className="h-4 w-4 mr-1" />
+          <span className="sr-only sm:not-sr-only sm:ml-1">Completado</span>
+        </button>
       </div>
 
       <AnimatePresence>
@@ -157,4 +193,3 @@ export default function ClientSelect({ id, currentStatus }) {
     </div>
   )
 }
-

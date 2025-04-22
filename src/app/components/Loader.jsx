@@ -1,8 +1,10 @@
+"use client"
+
 export default function Loader() {
-    return (
-      <div className="loader-container">
-        <div className="loader"></div>
-        <style jsx>{`
+  return (
+    <div className="loader-container">
+      <div className="loader"></div>
+      <style jsx>{`
           .loader-container {
             display: flex;
             justify-content: center;
@@ -28,7 +30,6 @@ export default function Loader() {
             80% { background-position: 0%  50%, 50%  50%, 100% 100% }
           }
         `}</style>
-      </div>
-    );
-  }
-  
+    </div>
+  )
+}

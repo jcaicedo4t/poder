@@ -1,3 +1,5 @@
+"use client"
+
 export default function HabitList({ habits, setShowModal }) {
   return (
     <div className="w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-lg">
@@ -25,5 +27,5 @@ export default function HabitList({ habits, setShowModal }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

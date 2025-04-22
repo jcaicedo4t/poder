@@ -17,7 +17,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="bg-white ">
+    <header className="bg-white border-b border-gray-100">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href={status === "authenticated" ? "/dashboard" : "/"} className="flex items-center">

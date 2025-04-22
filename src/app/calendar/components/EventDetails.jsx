@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { XMarkIcon, CalendarIcon, ClockIcon, TrashIcon, PencilIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 import dayjs from "dayjs"
 
@@ -65,14 +64,8 @@ export default function EventDetails({ event, onClose }) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
-    >
-      <div className="bg-indigo-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+    <div className="w-full">
+      <div className="bg-indigo-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center rounded-t-xl">
         <h2 className="text-lg font-medium text-indigo-800">Detalles del evento</h2>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Cerrar">
           <XMarkIcon className="h-5 w-5" />
@@ -167,6 +160,6 @@ export default function EventDetails({ event, onClose }) {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

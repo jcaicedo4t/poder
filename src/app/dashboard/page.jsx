@@ -1,7 +1,8 @@
-import Saludo from "../components/Saludo";
-import HomeCalendar from "../calendar/HomeCalendar";
-import HomeHabits from "../habits/HomeHabits";
-import HomeTask from "../task/HomeTask";
+import Saludo from "../components/Saludo"
+import HomeCalendar from "../calendar/HomeCalendar"
+import HomeHabits from "../habits/HomeHabits"
+import HomeTask from "../task/HomeTask"
+
 export default function Dashboard() {
   return (
     <>
@@ -13,10 +14,10 @@ export default function Dashboard() {
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <HomeCalendar />
-          <HomeHabits /> 
+          <HomeHabits />
           <HomeTask />
         </div>
       </div>
     </>
-  );
+  )
 }

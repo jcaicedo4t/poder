@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import Calendar from "./HomeCalendar"
 import CalendarEvents from "./CalendarEvent"
 import EventDetails from "./components/EventDetails"
@@ -54,8 +54,8 @@ export default function CalendarPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Calendario principal */}
-        <div className={`lg:col-span-${selectedEvent ? "8" : "12"}`}>
+        {/* Calendario principal - ahora ocupa todo el ancho siempre */}
+        <div className="lg:col-span-12">
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
             {view === "calendar" ? (
               <div className="p-4">
@@ -68,19 +68,6 @@ export default function CalendarPage() {
             )}
           </div>
         </div>
-
-        {/* Panel lateral de detalles del evento */}
-        {selectedEvent && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.3 }}
-            className="lg:col-span-4"
-          >
-            <EventDetails event={selectedEvent} onClose={() => setSelectedEvent(null)} />
-          </motion.div>
-        )}
 
         {/* Lista de próximos eventos */}
         <div className="lg:col-span-12">
@@ -108,6 +95,30 @@ export default function CalendarPage() {
           </div>
         </div>
       </div>
+
+      {/* Panel de detalles del evento como overlay */}
+      <AnimatePresence>
+        {selectedEvent && (
+          <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm"
+              onClick={() => setSelectedEvent(null)}
+            ></motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-md z-50 relative"
+            >
+              <EventDetails event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

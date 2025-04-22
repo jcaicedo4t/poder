@@ -1,30 +1,27 @@
 // ./components/FloatingButton.js
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 
 export default function FloatingButton() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
-    const root = document.documentElement;
-    const body = document.body;
-    const color = isDarkMode ? "black" : "white";
+    const root = document.documentElement
+    const body = document.body
+    const color = isDarkMode ? "black" : "white"
 
-    root.style.setProperty("background-color", color, "important"); 
-    
-    
+    root.style.setProperty("background-color", color, "important")
 
+    body.style.setProperty("background-color", color, "important")
 
-    body.style.setProperty("background-color", color, "important");
-
-    console.log(root.style.backgroundColor);
-    console.log(body.style.backgroundColor);
-  }, [isDarkMode]);
+    console.log(root.style.backgroundColor)
+    console.log(body.style.backgroundColor)
+  }, [isDarkMode])
 
   const toggleDarkMode = () => {
-    console.log("Toggle Dark Mode");
-    setIsDarkMode((prevMode) => !prevMode);
-  };
+    console.log("Toggle Dark Mode")
+    setIsDarkMode((prevMode) => !prevMode)
+  }
 
   return (
     <>
@@ -79,5 +76,5 @@ export default function FloatingButton() {
         </svg>
       </button>
     </>
-  );
+  )
 }
