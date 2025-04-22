@@ -64,7 +64,7 @@ export default function CalendarPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Calendario principal - ahora ocupa todo el ancho siempre */}
-        <div className="lg:col-span-12 calendar-container">
+        <div className="lg:col-span-12">
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden w-full">
             {view === "calendar" ? (
               <div className="p-4">

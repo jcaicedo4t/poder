@@ -72,20 +72,15 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
     }
   }
 
-  // Modificar la función que maneja el cierre del modal de detalles para recargar los eventos si se eliminó uno
   const handleSelectEvent = (event) => {
     if (onSelectEvent) {
       onSelectEvent(event)
     }
   }
 
-  // Asegurar que el componente HomeCalendar también mantenga un ancho consistente
-
-  // Modificar la estructura del componente para garantizar un ancho fijo:
-
   return (
-    <div className="bg-white rounded-lg w-full">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white shadow-md rounded-lg p-6 h-[500px]">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-900 flex items-center">
           <CalendarIcon className="h-6 w-6 text-indigo-600 mr-2" />
           {pathname === "/calendar" ? "Eventos del calendario" : "Próximos eventos"}
@@ -115,75 +110,77 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       ) : events.length > 0 ? (
-        <AnimatePresence>
-          <div className="space-y-4 w-full">
-            {events.map((event) => {
-              const startDateTime = formatDateTime(event.start_time)
-              const endDateTime = formatDateTime(event.end_time)
-              const duration = calculateDuration(event.start_time, event.end_time)
+        <div className="max-h-[400px] overflow-y-auto pr-2" style={{ scrollbarWidth: "thin" }}>
+          <AnimatePresence>
+            <div className="space-y-4 w-full">
+              {events.map((event) => {
+                const startDateTime = formatDateTime(event.start_time)
+                const endDateTime = formatDateTime(event.end_time)
+                const duration = calculateDuration(event.start_time, event.end_time)
 
-              return (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className={`p-4 rounded-lg border ${
-                    event.is_completed
-                      ? "bg-green-50 border-green-100"
-                      : startDateTime.isPast
-                        ? "bg-red-50 border-red-100"
-                        : startDateTime.isToday
-                          ? "bg-amber-50 border-amber-100"
-                          : "bg-white border-gray-200"
-                  } hover:shadow-md transition-shadow cursor-pointer w-full`}
-                  onClick={() => handleSelectEvent(event)}
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">{event.title}</h3>
-                      <p className="text-gray-600 text-sm mb-2">{event.description}</p>
-                      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                        <div className="flex items-center">
-                          <CalendarIcon className="h-4 w-4 mr-1" />
-                          <span>{startDateTime.date}</span>
+                return (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className={`p-4 rounded-lg border ${
+                      event.is_completed
+                        ? "bg-green-50 border-green-100"
+                        : startDateTime.isPast
+                          ? "bg-red-50 border-red-100"
+                          : startDateTime.isToday
+                            ? "bg-amber-50 border-amber-100"
+                            : "bg-white border-gray-200"
+                    } hover:shadow-md transition-shadow cursor-pointer w-full`}
+                    onClick={() => handleSelectEvent(event)}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{event.title}</h3>
+                        <p className="text-gray-600 text-sm mb-2">{event.description}</p>
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                          <div className="flex items-center">
+                            <CalendarIcon className="h-4 w-4 mr-1" />
+                            <span>{startDateTime.date}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <ClockIcon className="h-4 w-4 mr-1" />
+                            <span>
+                              {startDateTime.time} - {endDateTime.time}
+                            </span>
+                          </div>
+                          <div className="text-gray-400 text-xs">({duration})</div>
                         </div>
-                        <div className="flex items-center">
-                          <ClockIcon className="h-4 w-4 mr-1" />
-                          <span>
-                            {startDateTime.time} - {endDateTime.time}
+                      </div>
+                      <div>
+                        {event.is_completed ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <CheckCircleIcon className="h-4 w-4 mr-1" />
+                            Completado
                           </span>
-                        </div>
-                        <div className="text-gray-400 text-xs">({duration})</div>
+                        ) : startDateTime.isPast ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Vencido
+                          </span>
+                        ) : startDateTime.isToday ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                            Hoy
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            Próximo
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <div>
-                      {event.is_completed ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <CheckCircleIcon className="h-4 w-4 mr-1" />
-                          Completado
-                        </span>
-                      ) : startDateTime.isPast ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                          Vencido
-                        </span>
-                      ) : startDateTime.isToday ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                          Hoy
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          Próximo
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
-          </div>
-        </AnimatePresence>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </AnimatePresence>
+        </div>
       ) : (
         <div className="text-center py-16 bg-gray-50 rounded-lg w-full">
           <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
