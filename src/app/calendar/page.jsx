@@ -23,6 +23,15 @@ export default function CalendarPage() {
     setIsLoading(false)
   }
 
+  // Modificar la función que maneja el cierre del modal de detalles para recargar los eventos si se eliminó uno
+  const handleCloseEventDetails = (wasDeleted = false) => {
+    setSelectedEvent(null)
+    if (wasDeleted) {
+      setReload(true)
+      setIsLoading(true)
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -55,8 +64,8 @@ export default function CalendarPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Calendario principal - ahora ocupa todo el ancho siempre */}
-        <div className="lg:col-span-12">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <div className="lg:col-span-12 calendar-container">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden w-full">
             {view === "calendar" ? (
               <div className="p-4">
                 <CalendarEvents onCreateEvent={handleCreateEvent} onSelectEvent={setSelectedEvent} />
@@ -114,7 +123,7 @@ export default function CalendarPage() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="bg-white rounded-xl shadow-xl w-full max-w-md z-50 relative"
             >
-              <EventDetails event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+              <EventDetails event={selectedEvent} onClose={handleCloseEventDetails} />
             </motion.div>
           </div>
         )}

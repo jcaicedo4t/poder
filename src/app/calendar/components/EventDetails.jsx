@@ -39,14 +39,31 @@ export default function EventDetails({ event, onClose }) {
     }
   }
 
+  // Actualizar la función handleDelete para que haga una llamada real a la API
   const handleDelete = async () => {
     setIsDeleting(true)
     try {
-      // Aquí iría la llamada a la API para eliminar el evento
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulación
-      onClose()
+      const response = await fetch("/api/deleteEvent", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: event.id }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("Evento eliminado:", data)
+        onClose(true) // Pasar true para indicar que se eliminó un evento
+      } else {
+        console.error("Error al eliminar evento:", data.error)
+        alert("Error al eliminar el evento: " + data.error)
+        setIsDeleting(false)
+      }
     } catch (error) {
-      console.error("Error deleting event:", error)
+      console.error("Error en la solicitud:", error)
+      alert("Error al conectar con el servidor")
       setIsDeleting(false)
     }
   }

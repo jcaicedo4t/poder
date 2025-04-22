@@ -72,9 +72,20 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
     }
   }
 
+  // Modificar la función que maneja el cierre del modal de detalles para recargar los eventos si se eliminó uno
+  const handleSelectEvent = (event) => {
+    if (onSelectEvent) {
+      onSelectEvent(event)
+    }
+  }
+
+  // Asegurar que el componente HomeCalendar también mantenga un ancho consistente
+
+  // Modificar la estructura del componente para garantizar un ancho fijo:
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 h-[500px]">
-      <div className="flex justify-between items-center mb-4">
+    <div className="bg-white rounded-lg w-full">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-900 flex items-center">
           <CalendarIcon className="h-6 w-6 text-indigo-600 mr-2" />
           {pathname === "/calendar" ? "Eventos del calendario" : "Próximos eventos"}
@@ -105,7 +116,7 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
         </div>
       ) : events.length > 0 ? (
         <AnimatePresence>
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             {events.map((event) => {
               const startDateTime = formatDateTime(event.start_time)
               const endDateTime = formatDateTime(event.end_time)
@@ -126,8 +137,8 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
                         : startDateTime.isToday
                           ? "bg-amber-50 border-amber-100"
                           : "bg-white border-gray-200"
-                  } hover:shadow-md transition-shadow cursor-pointer`}
-                  onClick={() => onSelectEvent && onSelectEvent(event)}
+                  } hover:shadow-md transition-shadow cursor-pointer w-full`}
+                  onClick={() => handleSelectEvent(event)}
                 >
                   <div className="flex justify-between items-start">
                     <div>
@@ -174,7 +185,7 @@ export default function Calendar({ reload, onReloaded, onSelectEvent, isLoading 
           </div>
         </AnimatePresence>
       ) : (
-        <div className="text-center py-16 bg-gray-50 rounded-lg">
+        <div className="text-center py-16 bg-gray-50 rounded-lg w-full">
           <CalendarIcon className="mx-auto h-12 w-12 text-gray-400" />
           <h3 className="mt-2 text-sm font-medium text-gray-900">No hay eventos</h3>
           <p className="mt-1 text-sm text-gray-500">Comienza creando un nuevo evento en tu calendario.</p>
