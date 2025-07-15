@@ -68,7 +68,7 @@ export default function Pricing() {
   ]
 
   return (
-    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8 mt-52" id="pricing">
+    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8 mt-18" id="pricing">
       {/* Elementos decorativos de fondo */}
     
       {/* Círculos decorativos */}
